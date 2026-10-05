@@ -3,8 +3,8 @@
 Each line of the input file is a JSON object of the form:
     {"id": 1, "content": "some text"}
 
-The resulting index maps every trigram (3-character substring) to a sorted
-list of the document ids it appears in.
+The resulting index maps every trigram (3-character substring) to a list of
+(document id, position) tuples, sorted by document id and then position.
 """
 
 import argparse
@@ -14,8 +14,8 @@ from collections import defaultdict
 
 
 def trigrams(text):
-    """Return the set of unique trigrams in text."""
-    return {text[i:i + 3] for i in range(len(text) - 2)}
+    """Return the set of unique trigrams in text and their positions as tuples."""
+    return {(text[i:i + 3], i) for i in range(len(text) - 2)}
 
 
 def read_documents(path):
@@ -36,8 +36,8 @@ def build_index(documents):
     """Build a trigram -> sorted list of document ids dictionary."""
     index = defaultdict(set)
     for doc_id, content in documents:
-        for tri in trigrams(content):
-            index[tri].add(doc_id)
+        for tri, position in trigrams(content):
+            index[tri].add((doc_id, position))
     return {tri: sorted(ids) for tri, ids in index.items()}
 
 
@@ -53,6 +53,7 @@ def main():
         pickle.dump(index, f)
 
     print(f"Indexed {len(index)} unique trigrams -> {args.output}")
+    print(index['fox'])
 
 
 if __name__ == "__main__":
