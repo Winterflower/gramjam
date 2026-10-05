@@ -1,0 +1,5 @@
+{"id": 1, "content": "The quick brown fox jumps over the lazy dog."}
+{"id": 2, "content": "def search(pattern, text): return re.findall(pattern, text)"}
+{"id": 3, "content": "Trigram indexes make regular expression search fast."}
+{"id": 4, "content": "The lazy cat sleeps all day in the sun."}
+{"id": 5, "content": "import re\nprint(re.search(r'fox|cat', 'a quick fox'))"}
